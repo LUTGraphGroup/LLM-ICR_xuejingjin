@@ -11,7 +11,3 @@ The paper describes four sequential stages:
 3. MedGraphRAG retrieval of multi-hop inference chains;
 4. LLM candidate generation followed by Confidence-Aware Iterative Calibration (CAIR)
    and quality verification.
-
-The implementation includes those stages, deterministic offline tests, restricted-data
-schemas, preprocessing scripts, ablation utilities, parameter studies, transfer-study
-helpers, and table/figure generation scripts.
