@@ -54,28 +54,6 @@ python -m llm_icr.cli.evaluate --config configs/dummy.yaml
 
 Outputs are written under `results/runs/dummy/`.
 
-## Real-data workflow
-
-1. Obtain access to the required datasets and terminology resources.
-2. Keep them outside the supplementary ZIP, normally under `data/private/`.
-3. Run the relevant preprocessor:
-
-```bash
-python preprocess/preprocess_mimic3.py --help
-python preprocess/preprocess_mimic4.py --help
-python preprocess/preprocess_trd.py --help
-```
-
-4. Build an ontology and optional external graph:
-
-```bash
-python -m llm_icr.cli.build_ontology --help
-python -m llm_icr.cli.build_index --help
-```
-
-5. Copy and edit a dataset configuration under `configs/`.
-6. Run pipeline and evaluation.
-
 ## LLM backends
 
 - `mock`: deterministic and offline; intended only for tests.
@@ -86,33 +64,3 @@ The paper reports a fixed GPT-4 Turbo snapshot for all LLM tasks in Section 3.5,
 also states in Section 4.4 that GPT-3.5-turbo was used for NER and relation extraction.
 This package exposes task-specific model names so either interpretation can be tested.
 Historical model snapshots may no longer be available.
-
-## Data directories
-
-```text
-data/
-  examples/    public synthetic records and a tiny synthetic ontology
-  schemas/     source-table and processed-data definitions
-  templates/   empty or synthetic templates
-  private/     user-supplied restricted data; ignored by Git
-  processed/   locally produced datasets; ignored by Git
-  indices/     local dense indices and graph artifacts; ignored by Git
-```
-
-## Reproducing paper-style experiments
-
-```bash
-bash scripts/run_dummy.sh
-bash scripts/run_ablation_dummy.sh
-bash scripts/run_parameter_study_dummy.sh
-python -m llm_icr.cli.reproduce_tables --results-root results/runs --output-dir results/tables
-```
-
-Real MIMIC/TRD runs require licensed data, frozen splits, task-specific prompt caches or
-available model snapshots, validation-tuned CAIR weights, and the manually audited KG
-used in the study.
-
-## Not for clinical use
-
-This research code is not a medical device and must not be used for clinical diagnosis,
-billing, or autonomous coding decisions. Predictions require expert review.
