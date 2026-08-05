@@ -1,0 +1,76 @@
+project:
+  name: LLM-ICR
+  seed: 42
+  output_dir: results/runs/paper_reference
+data:
+  records: data/processed/REPLACE_ME.jsonl
+  ontology_nodes: data/private/icd_nodes.csv
+  ontology_edges: data/private/icd_edges.csv
+  term_dictionary: data/private/term_dictionary.csv
+  relation_constraints: data/private/relation_constraints.csv
+  split: test
+  data_classification: restricted
+text:
+  max_window_tokens: 512
+  overlap_ratio: 0.2
+  language: auto
+llm:
+  provider: openai_compatible
+  base_url: null
+  api_key_env: OPENAI_API_KEY
+  models:
+    entity: gpt-4-turbo-2024-04-09
+    relation: gpt-4-turbo-2024-04-09
+    path: gpt-4-turbo-2024-04-09
+    code: gpt-4-turbo-2024-04-09
+  temperature: 0.0
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+  max_output_tokens: 512
+  max_input_chars: 16000
+  cache_dir: data/private/api_cache
+  allow_external_api_for_restricted_data: false
+embeddings:
+  entity_backend: hashing
+  entity_model: dmis-lab/biobert-base-cased-v1.1
+  entity_dimension: 768
+  calibration_backend: hashing
+  calibration_model: sentence-transformers/all-MiniLM-L6-v2
+  calibration_dimension: 384
+  device: cpu
+thresholds:
+  entity: 0.7
+  relation: 0.8
+  code: 0.8
+  link: 0.15
+retrieval:
+  entry_top_k: 10
+  max_hops: 3
+  top_paths: 5
+  use_llm_path_reranker: true
+  dense_weight: 0.45
+  relation_weight: 0.25
+  llm_weight: 0.3
+cair:
+  enabled: true
+  alpha: 0.5
+  beta: 0.5
+  max_iterations: 2
+  require_leaf_code: false
+  cosine_to_unit_interval: true
+quality:
+  reject_unknown_codes: true
+  reject_wrong_version: true
+  defer_non_leaf_codes: true
+  export_manual_review: true
+evaluation:
+  threshold: 0.5
+  precision_k:
+  - 5
+  - 8
+  - 15
+  accuracy_k:
+  - 10
+  - 20
+  - 30
